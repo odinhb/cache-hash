@@ -165,12 +165,12 @@ describe CacheHash do
 
   describe "#time" do
     it "returns a time if the kv pair is not stale" do
-      time_before = Time.now
+      time_before = Time.utc
       sleep 1
       hash = CacheHash(String).new(3.seconds)
       hash.set "city_1", "Seattle"
       sleep 1
-      time_after = Time.now
+      time_after = Time.utc
 
       city_1_time = hash.time("city_1").not_nil!
       city_1_time.class.should eq(Time)

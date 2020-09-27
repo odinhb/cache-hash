@@ -7,7 +7,7 @@ class CacheHash(V)
 
   def get(key : String)
     if cached_time = @time_hash[key]?
-      if cached_time > Time.now - @cache_time_span
+      if cached_time > Time.utc - @cache_time_span
         @kv_hash[key]
       else
         delete key
@@ -20,7 +20,7 @@ class CacheHash(V)
     if val.nil?
       delete key
     else
-      @time_hash[key] = Time.now
+      @time_hash[key] = Time.utc
       @kv_hash[key] = val
     end
   end
@@ -34,7 +34,7 @@ class CacheHash(V)
   def purge_stale
     @kv_hash.each_key do |key|
       if cached_time = @time_hash[key]?
-        delete key unless cached_time > Time.now - @cache_time_span
+        delete key unless cached_time > Time.utc - @cache_time_span
       end
     end
   end
@@ -52,7 +52,7 @@ class CacheHash(V)
 
   def fresh?(key : String)
     if cached_time = @time_hash[key]?
-      if cached_time > Time.now - @cache_time_span
+      if cached_time > Time.utc - @cache_time_span
         true
       else
         delete key
@@ -65,7 +65,7 @@ class CacheHash(V)
 
   def time(key : String)
     if cached_time = @time_hash[key]?
-      if cached_time > Time.now - @cache_time_span
+      if cached_time > Time.utc - @cache_time_span
         cached_time
       else
         delete key
@@ -75,8 +75,8 @@ class CacheHash(V)
 
   def refresh(key : String)
     if cached_time = @time_hash[key]?
-      if cached_time > Time.now - @cache_time_span
-        @time_hash[key] = Time.now
+      if cached_time > Time.utc - @cache_time_span
+        @time_hash[key] = Time.utc
         @kv_hash[key]
       else
         delete key
