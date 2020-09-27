@@ -12,7 +12,7 @@ describe CacheHash do
   end
 
   it "allows different value types" do
-    hash = CacheHash(Int32).new(Time::Span.new(0, 0, 4))
+    hash = CacheHash(Int32).new(4.seconds)
     hash.set "key1", 1111
     hash.set "key2", 2222
     hash.set "key3", 3333
@@ -20,7 +20,7 @@ describe CacheHash do
     hash.get("key2").should eq(2222)
     hash.get("key3").should eq(3333)
 
-    hash2 = CacheHash(Int32 | String | Bool).new(Time::Span.new(0, 0, 4))
+    hash2 = CacheHash(Int32 | String | Bool).new(4.seconds)
     hash2.set "key1", 1111
     hash2.set "key2", "two"
     hash2.set "key3", false
@@ -63,7 +63,7 @@ describe CacheHash do
 
   describe "#purge_stale" do
     it "removes all stale, expired values from the hash" do
-      hash = CacheHash(String).new(Time::Span.new(0, 0, 3))
+      hash = CacheHash(String).new(3.seconds)
       hash.set "city_1", "Seattle"
       sleep 1
       hash.set "city_2", "Honk Kong"
@@ -90,7 +90,7 @@ describe CacheHash do
 
   describe "#keys" do
     it "purges all stale values and returns the IDs of non-stale kv pairs" do
-      hash = CacheHash(String).new(Time::Span.new(0, 0, 3))
+      hash = CacheHash(String).new(3.seconds)
       hash.set "city_1", "Seattle"
       sleep 1
       hash.set "city_2", "Honk Kong"
@@ -120,7 +120,7 @@ describe CacheHash do
 
   describe "#fresh?" do
     it "returns a true if the kv pair is not stale" do
-      hash = CacheHash(String).new(Time::Span.new(0, 0, 3))
+      hash = CacheHash(String).new(3.seconds)
       hash.set "city_1", "Seattle"
       sleep 1
       hash.set "city_2", "Honk Kong"
@@ -140,7 +140,7 @@ describe CacheHash do
     end
 
     it "removes deletes the kv pair if it is stale" do
-      hash = CacheHash(String).new(Time::Span.new(0, 0, 3))
+      hash = CacheHash(String).new(3.seconds)
       hash.set "city_1", "Seattle"
       sleep 1
       hash.set "city_2", "Honk Kong"
@@ -179,7 +179,7 @@ describe CacheHash do
     end
 
     it "delete the kv pair if it is stale" do
-      hash = CacheHash(String).new(Time::Span.new(0, 0, 3))
+      hash = CacheHash(String).new(3.seconds)
       hash.set "city_1", "Seattle"
       sleep 1
       hash.set "city_2", "Honk Kong"
@@ -204,7 +204,7 @@ describe CacheHash do
 
   describe "#refresh" do
     it "refreshes the expiration time" do
-      hash = CacheHash(String).new(Time::Span.new(0, 0, 3))
+      hash = CacheHash(String).new(3.seconds)
 
       hash.set "city_1", "Seattle"
       sleep 1
@@ -244,7 +244,7 @@ describe CacheHash do
       hash.get("city_2").should be_nil
     end
     it "returns the value on success" do
-      hash = CacheHash(String).new(Time::Span.new(0, 0, 3))
+      hash = CacheHash(String).new(3.seconds)
 
       hash.set "city_1", "Seattle"
       sleep 1
@@ -252,7 +252,7 @@ describe CacheHash do
       hash.refresh("city_1").should eq("Seattle")
     end
     it "returns nil if no key or if already expires" do
-      hash = CacheHash(String).new(Time::Span.new(0, 0, 3))
+      hash = CacheHash(String).new(3.seconds)
 
       hash.set "city_1", "Seattle"
       sleep 1
