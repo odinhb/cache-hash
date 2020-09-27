@@ -88,6 +88,25 @@ describe CacheHash do
     end
   end
 
+  describe "#inc" do
+    it "increments a value and returns it" do
+      hash = CacheHash(Int32).new(1.seconds)
+      hash.set("test", 4)
+
+      hash.inc("test").should eq(5)
+
+      sleep 1
+
+      hash.get("test").should be_nil
+    end
+
+    it "sets a value to 0 if it does not exist" do
+      hash = CacheHash(Int32).new(1.seconds)
+      hash.inc("nonexistent")
+      hash.get("nonexistent").should eq(1)
+    end
+  end
+
   describe "#keys" do
     it "purges all stale values and returns the IDs of non-stale kv pairs" do
       hash = CacheHash(String).new(3.seconds)

@@ -16,6 +16,13 @@ class CacheHash(V)
     end
   end
 
+  def inc(key : String)
+    val = get(key)
+    val.nil? ? (val = 1) : (val += 1)
+    set(key, val)
+    val
+  end
+
   def set(key : String, val : V | Nil)
     if val.nil?
       delete key
