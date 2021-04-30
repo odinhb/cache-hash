@@ -4,6 +4,6 @@ version: 0.2
 authors:
   - Sam Eaton <same@qualtrics.com>
 
-crystal: 0.35.1
+crystal: 1.0.0
 
 license: MIT
